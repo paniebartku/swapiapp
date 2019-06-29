@@ -1,10 +1,9 @@
-import React from "react";
+import React, { Component } from "react";
 import GlobalStyle from "../theme/GlobalStyle";
 import { debounce } from "lodash";
-
-class Root extends React.Component {
+import Item from "../components/Item/Item";
+class Root extends Component {
   state = {
-    text: "",
     searchValue: "",
     results: []
   };
@@ -16,6 +15,7 @@ class Root extends React.Component {
       .then(response => response.json())
       .then(data => {
         const results = data.results;
+        console.log(results);
         this.setState({ results });
       });
   }, 500);
@@ -25,16 +25,17 @@ class Root extends React.Component {
       <>
         <GlobalStyle />
         <input onChange={e => this.handleInput(e.target.value)} />
-
         <h2>{this.state.searchValue}</h2>
-
-        <ul>
-          {this.state.results.map(item => (
-            <li>
-              <p>{item.name}</p>
+        <Item>
+          {this.state.results.map((item, i) => (
+            <li key={i}>
+              <p>Name: {item.name}</p>
+              <p>Birth Day: {item.birth_year}</p>
+              <p>Height: {item.height}</p>
+              <p>Eye Color: {item.eye_color}</p>
             </li>
           ))}
-        </ul>
+        </Item>
       </>
     );
   }
