@@ -27,14 +27,16 @@ class Root extends Component {
         <input onChange={e => this.handleInput(e.target.value)} />
         <h2>{this.state.searchValue}</h2>
         <Item>
-          {this.state.results.map((item, i) => (
-            <li key={i}>
-              <p>Name: {item.name}</p>
-              <p>Birth Day: {item.birth_year}</p>
-              <p>Height: {item.height}</p>
-              <p>Eye Color: {item.eye_color}</p>
-            </li>
-          ))}
+          {this.state.results.map(
+            ({ name, birth_year, height, eye_color }, i) => (
+              <li key={i}>
+                <p>Name: {name}</p>
+                <p>Birth Day: {birth_year}</p>
+                <p>Height: {height}</p>
+                <p>Eye Color: {eye_color}</p>
+              </li>
+            )
+          )}
         </Item>
       </>
     );
