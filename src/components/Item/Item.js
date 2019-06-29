@@ -11,11 +11,10 @@ class Item extends Component {
   handleInput = debounce(searchValue => {
     this.setState({ searchValue });
 
-    fetch(` https://swapi.co/api/people/?search=${searchValue}`)
+    fetch(`https://swapi.co/api/people/?search=${searchValue}`)
       .then(response => response.json())
       .then(data => {
         const results = data.results;
-        console.log(results);
         this.setState({ results });
       });
   }, 500);

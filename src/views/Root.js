@@ -1,20 +1,9 @@
 import React from "react";
-import GlobalStyle from "../theme/GlobalStyle";
-import styled from "styled-components";
-import Item from "../components/Item/Item";
+import MainTemplate from "../templates/MainTemplate";
 
-const StyledWrapper = styled.div`
-  width: 1200px;
-  margin: 0 auto;
-  padding-top: 10rem;
-`;
-
-const Root = () => (
+const Root = ({ children }) => (
   <>
-    <GlobalStyle />
-    <StyledWrapper>
-      <Item />
-    </StyledWrapper>
+    <MainTemplate>{children}</MainTemplate>
   </>
 );
 
