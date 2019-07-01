@@ -5,7 +5,10 @@ import Input from "../Input/Input";
 class Item extends Component {
   state = {
     searchValue: "",
-    results: []
+    results: [],
+    homeworld: [],
+    planets: [],
+    fullPerson: []
   };
 
   handleInput = debounce(searchValue => {
@@ -16,11 +19,43 @@ class Item extends Component {
       .then(data => {
         const results = data.results;
         this.setState({ results });
+        for (let i = 0; i < results.length; i++) {
+          //console.log(results[i].homeworld);
+          let homeworld = results[i].homeworld;
+          this.setState({ homeworld });
+
+          fetch(homeworld)
+            .then(response => response.json())
+            .then(data => {
+              const { planets } = this.state;
+
+              planets.push(data);
+
+              this.setState({ planets });
+              const transformedPlanets = planets.map(({ name, terrain }) => ({
+                pName: name,
+                terrain
+              }));
+
+              const together = results.concat(transformedPlanets);
+              const mergeObject = Object.assign(...together);
+
+              const { fullPerson } = this.state;
+              fullPerson.push(mergeObject);
+              this.setState({ fullPerson });
+              if (searchValue === "") {
+                this.setState({ fullPerson: [] });
+              }
+              console.log(fullPerson);
+            });
+        }
       });
+    const { fullPerson } = this.state;
+    fullPerson.splice(0, fullPerson.length);
   }, 500);
 
   render() {
-    const { results, searchValue } = this.state;
+    const { fullPerson, searchValue } = this.state;
     return (
       <>
         <Input
@@ -29,12 +64,11 @@ class Item extends Component {
         />
         <h2>{searchValue}</h2>
         <ul>
-          {results.map(({ name, birth_year, height, eye_color }, i) => (
+          {fullPerson.map(({ name, pName, terrain }, i) => (
             <li key={i}>
               <p>Name: {name}</p>
-              <p>Birth Day: {birth_year}</p>
-              <p>Height: {height}</p>
-              <p>Eye Color: {eye_color}</p>
+              <p>Home: {pName}</p>
+              <p>Terrain: {terrain}</p>
             </li>
           ))}
         </ul>
