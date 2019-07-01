@@ -31,7 +31,9 @@ class MainTemplate extends Component {
         <StyledWrapper>
           <Menu isVisible={isMenuVisible} />
           <Item />
-          <Button onClick={this.handleMenuToggle}>Trigger</Button>
+          <Button onClick={this.handleMenuToggle}>
+            {isMenuVisible === false ? "Open" : "Close"}
+          </Button>
         </StyledWrapper>
       </>
     );
