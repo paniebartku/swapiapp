@@ -5,10 +5,7 @@ import Input from "../Input/Input";
 class Item extends Component {
   state = {
     searchValue: "",
-    results: [],
-    homeworld: [],
-    planets: [],
-    fullPerson: []
+    results: []
   };
 
   handleInput = debounce(searchValue => {
@@ -18,44 +15,28 @@ class Item extends Component {
       .then(response => response.json())
       .then(data => {
         const results = data.results;
-        this.setState({ results });
-        for (let i = 0; i < results.length; i++) {
-          //console.log(results[i].homeworld);
-          let homeworld = results[i].homeworld;
-          this.setState({ homeworld });
 
-          fetch(homeworld)
+        results.forEach(item => {
+          fetch(item.homeworld)
             .then(response => response.json())
             .then(data => {
-              const { planets } = this.state;
+              item.homeworld = "";
+              const homeworld = data.name;
+              item.homeworld = homeworld;
 
-              planets.push(data);
+              const terrain = data.terrain;
+              item.terrain = terrain;
 
-              this.setState({ planets });
-              const transformedPlanets = planets.map(({ name, terrain }) => ({
-                pName: name,
-                terrain
-              }));
-
-              const together = results.concat(transformedPlanets);
-              const mergeObject = Object.assign(...together);
-
-              const { fullPerson } = this.state;
-              fullPerson.push(mergeObject);
-              this.setState({ fullPerson });
-              if (searchValue === "") {
-                this.setState({ fullPerson: [] });
-              }
-              console.log(fullPerson);
+              this.setState({ results, terrain });
             });
-        }
+        });
+        console.log(results);
       });
-    const { fullPerson } = this.state;
-    fullPerson.splice(0, fullPerson.length);
-  }, 500);
+  }, 1000);
 
   render() {
-    const { fullPerson, searchValue } = this.state;
+    const { searchValue, results } = this.state;
+
     return (
       <>
         <Input
@@ -64,11 +45,11 @@ class Item extends Component {
         />
         <h2>{searchValue}</h2>
         <ul>
-          {fullPerson.map(({ name, pName, terrain }, i) => (
+          {results.map(({ name, homeworld, terrain }, i) => (
             <li key={i}>
               <p>Name: {name}</p>
-              <p>Home: {pName}</p>
-              <p>Terrain: {terrain}</p>
+              <p>Home: {homeworld}</p>
+              <p>Home: {terrain}</p>
             </li>
           ))}
         </ul>
