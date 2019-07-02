@@ -27,12 +27,27 @@ class Item extends Component {
               const terrain = data.terrain;
               item.terrain = terrain;
 
-              this.setState({ results, terrain });
+              let films = item.films;
+              const movies = [];
+              films.forEach(item => {
+                fetch(item)
+                  .then(response => response.json())
+                  .then(data => {
+                    const film = data.title;
+                    // console.log(film);
+                    movies.push(film);
+                    this.setState({ results });
+                  });
+              });
+              item.films = movies;
+
+              results.concat(movies);
+              this.setState({ results });
             });
         });
         console.log(results);
       });
-  }, 1000);
+  }, 500);
 
   render() {
     const { searchValue, results } = this.state;
@@ -45,11 +60,17 @@ class Item extends Component {
         />
         <h2>{searchValue}</h2>
         <ul>
-          {results.map(({ name, homeworld, terrain }, i) => (
+          {results.map(({ name, homeworld, terrain, films }, i) => (
             <li key={i}>
               <p>Name: {name}</p>
               <p>Home: {homeworld}</p>
-              <p>Home: {terrain}</p>
+              <p>Terrain: {terrain}</p>
+              <p>Films: </p>
+              <ul>
+                {films.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
+              </ul>
             </li>
           ))}
         </ul>
