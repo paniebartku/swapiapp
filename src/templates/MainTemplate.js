@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import GlobalStyle from "../theme/GlobalStyle";
 import styled from "styled-components";
+import Intro from "../components/Intro/Intro";
 import Item from "../components/Item/Item";
 import Menu from "../components/Menu/Menu";
 import Button from "../components/Button/Button";
 
 const StyledWrapper = styled.div`
-  width: 1200px;
+  /* width: 1200px; */
   margin: 0 auto;
-  padding-top: 10rem;
+  /*padding-top: 10rem; */
 `;
 
 class MainTemplate extends Component {
@@ -30,6 +31,7 @@ class MainTemplate extends Component {
         <GlobalStyle />
         <StyledWrapper>
           <Menu isVisible={isMenuVisible} />
+          <Intro />
           <Item />
           <Button onClick={this.handleMenuToggle}>
             {isMenuVisible === false ? "Open" : "Close"}
