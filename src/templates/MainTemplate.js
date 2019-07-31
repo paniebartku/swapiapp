@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import GlobalStyle from "../theme/GlobalStyle";
 import styled from "styled-components";
+import { ThemeProvider } from "styled-components";
+import { theme } from "../theme/mainTheme";
 import Intro from "../components/Intro/Intro";
 import Item from "../components/Item/Item";
 import Menu from "../components/Menu/Menu";
@@ -29,14 +31,16 @@ class MainTemplate extends Component {
     return (
       <>
         <GlobalStyle />
-        <StyledWrapper>
-          <Menu isVisible={isMenuVisible} />
-          <Intro />
-          <Item />
-          <Button onClick={this.handleMenuToggle}>
-            {isMenuVisible === false ? "Open" : "Close"}
-          </Button>
-        </StyledWrapper>
+        <ThemeProvider theme={theme}>
+          <StyledWrapper>
+            <Menu isVisible={isMenuVisible} />
+            <Intro />
+            <Item />
+            <Button onClick={this.handleMenuToggle}>
+              {isMenuVisible === false ? "Open" : "Close"}
+            </Button>
+          </StyledWrapper>
+        </ThemeProvider>
       </>
     );
   }
