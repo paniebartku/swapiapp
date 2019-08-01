@@ -30,7 +30,6 @@ class Item extends Component {
               //  this.setState({ results });
             });
 
-          const proms = [];
           const films = item.films;
           const movies = [];
           const asyncfn = async () => {
