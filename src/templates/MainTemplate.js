@@ -34,7 +34,7 @@ class MainTemplate extends Component {
         <ThemeProvider theme={theme}>
           <StyledWrapper>
             <Menu isVisible={isMenuVisible} />
-            <Intro />
+            {/* <Intro /> */}
             <Item />
             <Button onClick={this.handleMenuToggle}>
               {isMenuVisible === false ? "Open" : "Close"}

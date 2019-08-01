@@ -27,21 +27,34 @@ class Item extends Component {
               const terrain = data.terrain;
               item.terrain = terrain;
 
-              this.setState({ results });
+              //  this.setState({ results });
             });
 
-          let films = item.films;
+          const proms = [];
+          const films = item.films;
           const movies = [];
-          films.forEach(item => {
-            fetch(item)
-              .then(response => response.json())
-              .then(data => {
-                const film = data.title;
-                movies.push(film);
-                this.setState({ results });
-              });
-          });
-          item.films = movies;
+          const asyncfn = async () => {
+            for (let i = 0; i < films.length; i++) {
+              await fetch(films[i])
+                .then(res => res.json())
+                .then(data => {
+                  const film = data.title;
+                  movies.push(film);
+                  this.setState({ results });
+                });
+              item.films = movies;
+            }
+          };
+          asyncfn();
+
+          // item.films.forEach(film => {
+          //   proms.push(fetch(film).then(response => response.json()));
+          //   Promise.all(proms).then(data => {
+          //     movies.push(data.title);
+          //     this.setState({ results });
+          //   });
+          // });
+          // item.films = movies;
 
           results.concat(movies);
         });
