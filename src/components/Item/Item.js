@@ -15,48 +15,60 @@ class Item extends Component {
       .then(response => response.json())
       .then(data => {
         const results = data.results;
+        const asyncfn = async () => {
+          for (let i = 0; i < results.length; i++) {
+            await fetch(results[i].homeworld)
+              .then(res => res.json())
+              .then(data => {
+                results[i].homeworld = "";
+                const homeworld = data.name;
+                results[i].homeworld = homeworld;
+                const terrain = data.terrain;
+                results[i].terrain = terrain;
+                // this.setState({ results });
+              });
 
-        results.forEach(item => {
-          fetch(item.homeworld)
-            .then(response => response.json())
-            .then(data => {
-              item.homeworld = "";
-              const homeworld = data.name;
-              item.homeworld = homeworld;
+            let films = results[i].films;
+            const movies = [];
 
-              const terrain = data.terrain;
-              item.terrain = terrain;
-
-              //  this.setState({ results });
-            });
-
-          const films = item.films;
-          const movies = [];
-          const asyncfn = async () => {
             for (let i = 0; i < films.length; i++) {
-              await fetch(films[i])
+              fetch(films[i])
                 .then(res => res.json())
                 .then(data => {
                   const film = data.title;
                   movies.push(film);
                   this.setState({ results });
                 });
-              item.films = movies;
             }
-          };
-          asyncfn();
+            results[i].films = movies;
+            results.concat(movies);
+          }
+          this.setState({ results });
+        };
+        asyncfn();
+        // results.forEach(item => {
+        //   fetch(item.homeworld)
+        //     .then(response => response.json())
+        //     .then(data => {
+        //       item.homeworld = "";
+        //       const homeworld = data.name;
+        //       item.homeworld = homeworld;
 
-          // item.films.forEach(film => {
-          //   proms.push(fetch(film).then(response => response.json()));
-          //   Promise.all(proms).then(data => {
-          //     movies.push(data.title);
-          //     this.setState({ results });
-          //   });
-          // });
-          // item.films = movies;
+        //       const terrain = data.terrain;
+        //       item.terrain = terrain;
+        //       this.setState({ results });
+        //     });
 
-          results.concat(movies);
-        });
+        // item.films.forEach(film => {
+        //   proms.push(fetch(film).then(response => response.json()));
+        //   Promise.all(proms).then(data => {
+        //     movies.push(data.title);
+        //     this.setState({ results });
+        //   });
+        // });
+        // item.films = movies;
+
+        // });
 
         console.log(results);
       });
